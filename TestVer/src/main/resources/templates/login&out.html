@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<script src="http://code.jquery.com/jquery-3.4.1.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link th:href="@{/CSS/mainTemplate.css}" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script th:inline="javascript">
+  /*<![CDATA[*/ /*]]>*/
+  function checkNum(){
+    var msg = "<input type='text' placeholder='인증번호' class='input'id='EmailNum' name='Emailnumber' />";
+    document.getElementById('checkNum').innerHTML += msg;
+    const target = document.getElementById('EmailNum');
+    target.disabled = true;
+    mailSender();
+  }
+  var number;
+
+  function mailSender(){// 메일 입력 유효성 검사
+    console.log("실행중");
+      var mail = $("#Email").val(); //사용자의 이메일 입력값.
+      $.ajax({
+        type: 'post',
+        url: '/mail',
+        async:false,
+        data: {
+          mail:mail
+        },
+        dataType: 'json',
+        success:function(data) {
+          // number = data.value; // data로 받아온 List를 변수에 담기
+          number = data;
+        }
+      });
+      alert('인증번호가 전송되었습니다.' + number);
+  };
+  function joinForm(){// 메일 입력 유효성 검사
+    var id = document.join.id.value;
+    var pw = document.join.pw.value;
+    var name = document.join.name.value;
+    var age = document.join.age.value;
+    var tel = document.join.Tel.value;
+    var Email = document.join.Email.value;
+    var EmailNumber = document.join.Emailnumber.value;;
+    if(number==EmailNumber) {
+      $.ajax({
+        type: 'post',
+        url: '/Join',
+        data: {
+          id: id,
+          pw: pw,
+          name: name,
+          age: age,
+          tel: tel,
+          Email: Email
+        },
+        dataType: 'json'
+      });
+      alert('회원가입완료');
+      window.location.href = '/JoinSuccess';
+    }else{
+      alert('회원가입실패');
+    }
+  };
+
+  $(function() {
+    $("#idCheck").click(function () {// 메일 입력 유효성 검사
+      var checkResult = null;
+      var id = $("#id").val(); //사용자의 이메일 입력값.
+      $.ajax({
+        type: 'post',
+        url: '/idCheck',
+        async:false,
+        data: {
+          id:id
+        },
+        dataType: 'json',
+        success:function(data) {
+          checkResult = data;
+        }
+      });
+      if(checkResult != 1 ){
+        alert('ID사용가능합니다.');
+      }else{
+        alert('ID가 중복됩니다.');
+      }
+    })
+  });
+
+  // function loginForm(){
+  //   var id = document.Login.id;
+  //   var pw = document.Login.pw;
+  //   $.ajax({
+  //     type: 'post',
+  //     url: '/login',
+  //     data: {
+  //       id: id,
+  //       pw: pw,
+  //     },
+  //     dataType: 'json'
+  //   });
+  // }
+  /*]]>*/
+</script>
+<body>
+<div class="container right-panel-active" style="height:600px">
+  <!-- Sign In -->
+  <div class="container__form container--signin">
+    <form th:action="@{/mainIndex}"class="form" name="Login" method="post">
+      <h2 class="form__title">Sign In</h2>
+      <input type="text" placeholder="ID" class="input" name="id" />
+      <input type="password" placeholder="Password" class="input" name="pw"/>
+      <button class="btn">Sign In</button>
+<!--      <button class="btn" type="submit">Sign In</button>-->
+    </form>
+  </div>
+
+  <!-- Sign Up -->
+  <div class="container__form container--signup">
+    <form class="form" id="form2" method="post" name = "join">
+      <h2 class="form__title">Sign Up</h2>
+      <div >
+        <input type="text" placeholder="id" class="input col-sm-5" style="width: 60%" id="id" name="id"/>
+        <button type="button" id="idCheck" class="checkButton">ID check</button>
+      </div>
+      <input type="password" placeholder="pw" class="input" name="pw"/>
+      <input type="text" placeholder="name" class="input"name="name" />
+      <input type="text" placeholder="age" class="input" name="age"/>
+      <input type="text" placeholder="tel" class="input" name="Tel"/>
+      <div >
+        <input type="text" placeholder="Email" class="input col-sm-5" style="width: 60%" name="Email" id="Email"/>
+        <button type="button" class="checkButton" onclick="checkNum()" id="EmailNum">Email인증</button>
+      </div>
+      <div id="checkNum"></div>
+      <button class="btn" onclick="javascript:joinForm()">Sign Up</button>
+    </form>
+  </div>
+
+  <!-- Overlay -->
+  <div class="container__overlay">
+    <div class="overlay">
+      <div class="overlay__panel overlay--left">
+        <button class="btn" id="signIn">Sign In</button>
+      </div>
+      <div class="overlay__panel overlay--right">
+        <button class="btn" id="signUp">Sign Up</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" th:src="@{/JS/main.js}"></script>
+</body>
+</html>

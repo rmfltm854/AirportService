@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.TestVer.Airport.AirDao.AirportMapper"><!-- SQL문들을 table마다 구분할수 있는 이름 공간..(영역) -->
+    <!-- SQL문들을 작성하는 파일.... -->
+
+    <select id="DomesticAirport" resultType="com.example.TestVer.Airport.AirVO.AirportVO">
+        select * from airport where KorCountryName = "대한민국";
+    </select>
+
+    <select id="InternationalAirport" resultType="com.example.TestVer.Airport.AirVO.AirportVO">
+        select * from airport where KorCountryName Not Like "대한민국";
+    </select>
+
+</mapper>

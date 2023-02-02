@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.TestVer.model.dao.TestMapper"><!-- SQL문들을 table마다 구분할수 있는 이름 공간..(영역) -->
+    <!-- SQL문들을 작성하는 파일.... -->
+
+    <select id="selectAll" resultType="com.example.TestVer.model.DTO.UserVO">
+            select * from user;
+    </select>
+
+    <insert id="joinUser">
+        insert into user  values (#{id},#{pw},#{name},#{age},#{Tel},#{Email},#{Role})
+    </insert>
+
+    <select id="idCheck" resultType="String">
+        select id from user where id = #{id}
+    </select>
+
+    <select id="userInfo" resultType="com.example.TestVer.model.DTO.UserVO">
+        select * from user where id = #{id};
+    </select>
+
+    <select id="getPw" resultType="String">
+        select pw from user where id = #{id};
+    </select>
+</mapper>
